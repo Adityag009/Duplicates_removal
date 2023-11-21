@@ -15,7 +15,7 @@ if uploaded_file1 is not None and uploaded_file2 is not None:
     df1 = pd.read_csv(uploaded_file1,header=0,index_col=False)
     df2 = pd.read_csv(uploaded_file2,header=0,index_col=False)
 
-    # Merging the dataframes
+    # Merging the data frames
     frames = [df1, df2]
     df = pd.concat(frames)
 
@@ -24,13 +24,21 @@ if uploaded_file1 is not None and uploaded_file2 is not None:
 
     # Button to show duplicate values
     if st.button('Show Duplicate Values'):
-        # Finding duplicate values
-        duplicates = df[df.duplicated(subset=['Phone', 'Email'], keep=False)]
-        st.write('Duplicate Values based on Phone and Email:')
-        st.dataframe(duplicates)
+        # Finding duplicate values based on Phone
+        duplicates_phone = df[df.duplicated(subset=['Phone'], keep=False)]
+        st.write('Duplicate Values based on Phone:')
+        st.dataframe(duplicates_phone)
+        
+        # Finding duplicate values based on Email
+        duplicates_email = df[df.duplicated(subset=['Email'], keep=False)]
+        st.write('Duplicate Values based on Email:')
+        st.dataframe(duplicates_email)
 
-    # Removing duplicates
-    df.drop_duplicates(subset=['Phone', 'Email'], inplace=True)
+    # Removing duplicates first based on Phone
+    df.drop_duplicates(subset=['Phone'], inplace=True)
+
+    # Then, removing duplicates based on Email
+    df.drop_duplicates(subset=['Email'], inplace=True)
 
     # Showing shape after removing duplicates
     st.write('Shape after removing duplicates:', df.shape)
